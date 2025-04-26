@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #7f0c0c;
+  --foreground: black;
 }
 
 @theme inline {
@@ -14,9 +14,18 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #7f0c0c;
+    --foreground: black;
   }
+}
+
+header {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #af0101, #310101);
+  padding: 1rem 3rem;
 }
 
 body {
@@ -24,3 +33,92 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo {
+  height: 50px;
+  width: auto;
+}
+
+.team-name {
+  font-size: 2rem;
+  font-weight: 300; /* Thin text */
+  margin: 0;
+}
+
+.season-year {
+  font-size: 1rem;
+  font-weight: 80;
+  letter-spacing: 2px;
+}
+
+.player-table thead {
+  background-color: #310101;
+  color: white;
+  border-color: #310101;
+}
+
+.game-cards {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.card {
+  background: #d4af37;
+  padding: 0.5rem;
+  border-radius: 8px;
+  min-width: 150px;
+  text-align: center;
+}
+
+.card.loss {
+  background: #bbb;
+}
+
+.main-content {
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  background-color: #f9f1f1;
+}
+
+.filters {
+  flex: 1;
+  background: #f5f5f5;
+  padding: 1rem;
+}
+
+.table-section {
+  flex: 3;
+}
+
+.player-profile {
+  flex: 2;
+  background: #f5f5f5;
+  padding: 1rem;
+}
+
+.player-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.player-table th{
+  user-select: none;
+}
+th:hover {
+  background-color: #510101; 
+}
+
+.player-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+}
+

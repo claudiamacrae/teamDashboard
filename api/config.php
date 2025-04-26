@@ -1,6 +1,6 @@
 <?php
 #db connection using PDO
-require_once __DIR__ . '/../vendor/autoload.php';  // Include Composer's autoloader
+require_once __DIR__ . '/vendor/autoload.php';  // Include Composer's autoloader
 
 // Load environment variables from .env file
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
