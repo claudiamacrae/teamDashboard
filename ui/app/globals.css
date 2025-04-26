@@ -63,7 +63,7 @@ body {
   border-color: #310101;
 }
 
-.game-cards {
+.game-bar {
   display: flex;
   gap: 1rem;
   overflow-x: auto;
@@ -76,9 +76,10 @@ body {
   border-radius: 8px;
   min-width: 150px;
   text-align: center;
+  cursor: pointer;
 }
 
-.card.loss {
+.card.selected {
   background: #bbb;
 }
 

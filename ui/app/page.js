@@ -1,80 +1,27 @@
-import React from "react";
+"use client";
+import { useState } from "react";
 import PlayerTable from "@/components/PlayerTable";
-
-const defaultPlayers = [
-  {
-    firstName: "Brandon",
-    lastName: "Banks",
-    number: 33,
-    position: "K",
-    height: 40,
-    weight: 130,
-    age: 32,
-    exp: 20,
-    college: "Northwestern",
-    seasonRank: 9,
-    gameRank: 1,
-  },
-  {
-    firstName: "Alex",
-    lastName: "Morales",
-    number: 81,
-    position: "TE",
-    height: 74,
-    weight: 320,
-    age: 22,
-    exp: 5,
-    college: "Penn State",
-    seasonRank: 4,
-    gameRank: 2,
-  },
-  {
-    firstName: "Chris",
-    lastName: "Wilson",
-    number: 90,
-    position: "QB",
-    height: 73,
-    weight: 180,
-    age: 20,
-    exp: 1,
-    college: "Kent State",
-    seasonRank: 2,
-    gameRank: 8,
-  },
-  {
-    firstName: "Seamus",
-    lastName: "Long",
-    number: 8,
-    position: "RB",
-    height: 73,
-    weight: 330,
-    age: 22,
-    exp: 2,
-    college: "Oklahoma State",
-    seasonRank: 1,
-    gameRank: 1,
-  },
-  {
-    firstName: "Pinky",
-    lastName: "Peterson",
-    number: 8,
-    position: "RB",
-    height: 73,
-    weight: 330,
-    age: 22,
-    exp: 2,
-    college: "Oklahoma State",
-    seasonRank: 1,
-    gameRank: 1,
-  },
-];
+import GameCard from "@/components/GameCard";
 
 const res = await fetch("http://localhost:3000/api/players", {
   cache: "no-store",
 });
 const players = await res.json();
 
+const res2 = await fetch("http://localhost:3000/api/games", {
+  cache: "no-store",
+});
+const games = await res2.json();
+
 const Dashboard = () => {
+  const [selectedGame, setSelectedGame] = useState(null);
+  const [selectedPlayer, setSelectedPlayer] = useState(null);
+
+  const handleGameCardClick = (gameId) => {
+    setSelectedGame(gameId === selectedGame ? null : gameId); // Toggle selection
+    // Fetch player ranks for the selected game
+  };
+
   return (
     <div className="dashboard">
       <header className="header">
@@ -84,6 +31,21 @@ const Dashboard = () => {
         </div>
         <p className="season-year">2025-2026 SEASON</p>
       </header>
+
+      <section className="game-bar">
+        {games.map((game, index) => (
+          <GameCard
+            key={index}
+            opponent={game.opponent}
+            location={game.location}
+            date={game.date}
+            team_score={game.team_score}
+            opp_score={game.opponent_score}
+            isSelected={game.id === selectedGame}
+            onClick={() => handleGameCardClick(game.id)}
+          />
+        ))}
+      </section>
 
       <main className="main-content">
         <section className="table-section">
