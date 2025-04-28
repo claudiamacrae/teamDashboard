@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
-const PlayerTable = ({ players }) => {
+const PlayerTable = ({ players, ranks }) => {
   const headers = [
     { label: "SEASON RANK", key: "season_rank", width: "80px" },
     { label: "GAME RANK", key: "game_rank", width: "80px" },
@@ -21,7 +21,24 @@ const PlayerTable = ({ players }) => {
     direction: "ascending",
   });
 
-  const sortedPlayers = [...players].sort((a, b) => {
+  const playersWithRanks = useMemo(() => {
+    if (!ranks) return players; // <- prevent crash when ranks is null
+    console.log("ranks value:", ranks);
+    console.log("ranks type:", typeof ranks);
+
+    const rankMap = new Map();
+    ranks.forEach((rank) => {
+      rankMap.set(rank.player_id, rank.rank); // player_id -> game_rank
+    });
+
+    return players.map((player) => ({
+      ...player,
+      game_rank: rankMap.get(player.id) || null, // Add game_rank if found
+    }));
+  }, [players, ranks]);
+  
+
+  const sortedPlayers = [...playersWithRanks].sort((a, b) => {
     if (sortConfig.key === null) return 0;
 
     const aValue = a[sortConfig.key];
