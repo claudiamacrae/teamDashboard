@@ -1,41 +1,42 @@
 <?php
+require_once '../config.php';
+header('Content-Type: application/json');
 
-$players = range(1, 60); // Player IDs from 1 to 60
-$games = range(1, 18);   // Game IDs from 1 to 18
+try {
+    $week = isset($_GET['week']) ? (int)$_GET['week'] : null;
+    $playerId = isset($_GET['player_id']) ? (int)$_GET['player_id'] : null;
 
-$rankings = [];
+    // Start building the SQL
+    $sql = "SELECT `id`, `player_id`, `game_id`, `rank` FROM player_game_ranks";
 
-foreach ($games as $game_id) {
-    // Randomly decide how many players participated (between 45 and 55)
-    $num_players = rand(45, 55);
-    
-    // Randomly select players for this game
-    $players_in_game = $players;
-    shuffle($players_in_game);
-    $players_in_game = array_slice($players_in_game, 0, $num_players);
-    
-    // Shuffle again to randomize the ranking
-    shuffle($players_in_game);
-    
-    foreach ($players_in_game as $rank => $player_id) {
-        $rankings[] = [
-            'player_id' => $player_id,
-            'game_id' => $game_id,
-            'rank' => $rank + 1 // Ranks start at 1
-        ];
+    $conditions = [];
+    $params = [];
+
+    if ($week !== null) {
+        $conditions[] = 'game_id = :week';
+        $params['week'] = $week;
     }
-}
-
-foreach ($rankings as $r) {
-    $stmt = $pdo->prepare("INSERT INTO `player_game_ranks` (`player_id`, `game_id`, `rank`) VALUES (?, ?, ?)");
-
-    foreach ($rankings as $r) {
-        $stmt->execute([
-            $r['player_id'],
-            $r['game_id'],
-            $r['rank']
-        ]);
+    if ($playerId !== null) {
+        $conditions[] = 'player_id = :playerId';
+        $params['playerId'] = $playerId;
     }
+    if (!empty($conditions)) {
+        $sql .= ' WHERE ' . implode(' AND ', $conditions);
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    $ranks = $stmt->fetchAll();
     
+    echo json_encode([
+        'success' => true,
+        'data' => $ranks
+    ]);
+} catch (PDOException $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
 }
 ?>
