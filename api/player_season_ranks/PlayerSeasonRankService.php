@@ -6,15 +6,35 @@ class PlayerSeasonRankService {
         $this->pdo = $pdo;
     }
 
-    public function getAll() {
+    public function getAllSeasonRanks() {
         $stmt = $this->pdo->query("SELECT * FROM player_season_ranks");
         return $stmt->fetchAll();
     }
 
-    public function calculateSeasonRankForPlayer($playerId) {
-        $stmt = $this->pdo->prepare("SELECT rank FROM player_game_ranks WHERE player_id = ?");
+    public function getSeasonRankByPlayerId($playerId) {
+        $stmt = $this->pdo->prepare("SELECT * FROM player_season_ranks WHERE player_id = ?");
         $stmt->execute([$playerId]);
-        $ranks = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return $stmt->fetch();
+    }
+
+    public function getAllGameRanksByPlayerId($playerId) {
+        $stmt = $this->pdo->prepare("SELECT * FROM player_game_ranks WHERE player_id = ?");
+        $stmt->execute([$playerId]);
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function updateSeasonRank($playerId, $rank) {
+        $stmt = $this->pdo->prepare("UPDATE player_season_ranks SET `rank` = ? WHERE player_id = ?");
+        return $stmt->execute([$rank, $playerId]);
+    }
+
+    public function deleteSeasonRank($playerId) {
+        $stmt = $this->pdo->prepare("DELETE FROM player_season_ranks WHERE player_id = ?");
+        return $stmt->execute([$playerId]);
+    }
+
+    public function calculateSeasonRankForPlayer($playerId) {
+        $ranks = $this->getAllGameRanksByPlayerId($playerId);
 
         if (empty($ranks)) {
             return null;
@@ -23,27 +43,22 @@ class PlayerSeasonRankService {
     }
 
     public function upsertSeasonRank($playerId) {
-        $rank = $this->calculateSeasonRankForPlayer($playerId);
-        if ($rank === null) {
-            throw new Exception("No game ranks for player $playerId");
+        $newRank = $this->calculateSeasonRankForPlayer($playerId);
+        if ($newRank === null) {
+            throw new Exception("Season rank could not be calculated for player $playerId");
         }
+        $currentRank = $this->getSeasonRankByPlayerId($playerId);
 
-        $stmt = $this->pdo->prepare("SELECT id FROM player_season_ranks WHERE player_id = ?");
-        $stmt->execute([$playerId]);
-        $exists = $stmt->fetch();
-
-        if ($exists) {
-            $stmt = $this->pdo->prepare("UPDATE player_season_ranks SET rank = ? WHERE player_id = ?");
-            $stmt->execute([$rank, $playerId]);
+        if ($currentRank) {
+            $this->updateSeasonRank($playerId, $newRank);
         } else {
-            $stmt = $this->pdo->prepare("INSERT INTO player_season_ranks (player_id, rank) VALUES (?, ?)");
-            $stmt->execute([$playerId, $rank]);
+            $stmt = $this->pdo->prepare("INSERT INTO player_season_ranks (player_id, `rank`) VALUES (?, ?)");
+            $stmt->execute([$playerId, $newRank]);
         }
-
-        return $rank;
+        return $newRank;
     }
 
-    public function recalculateAllPlayers() {
+    public function recalculateAllSeasonRanks() {
         $stmt = $this->pdo->query("SELECT DISTINCT player_id FROM player_game_ranks");
         $playerIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
