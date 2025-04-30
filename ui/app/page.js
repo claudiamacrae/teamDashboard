@@ -13,37 +13,53 @@ const gamesF = await fetch("http://localhost:3000/api/games", {
 });
 const games = await gamesF.json();
 
-async function getPlayerRanks(gameId) {
-  let ranksF = await fetch(`http://localhost:3000/api/ranks?week=${gameId}`, {
-    cache: "no-store",
-  });
+const seasonRanksF = await fetch("http://localhost:3000/api/season_ranks", {
+  cache: "no-store",
+});
+const seasonRanks = await seasonRanksF.json();
+
+async function getPlayerGameRanks(gameId) {
+  let ranksF = await fetch(
+    `http://localhost:3000/api/game_ranks?week=${gameId}`,
+    {
+      cache: "no-store",
+    }
+  );
   if (!ranksF.ok) {
     throw new Error("Failed to fetch player ranks");
   }
-  let data = ranksF.json(); // assuming your API returns JSON
-  console.log("Fetched ranks:", data);
+  let data = await ranksF.json(); // assuming your API returns JSON
+  // console.log("Fetched ranks:", data); // Debugging statement removed for production
   return data;
 }
 
 const Dashboard = () => {
   const [selectedGame, setSelectedGame] = useState(null);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
-  const [ranks, setRanks] = useState([]);
+  const [gameRanks, setGameRanks] = useState([]);
 
   const handleGameCardClick = (gameId) => {
     setSelectedGame(gameId === selectedGame ? null : gameId);
   };
 
   useEffect(() => {
-    const fetchRanks = async () => {
+    const fetchGameRanks = async () => {
       if (selectedGame) {
-        const fetchedRanks = await getPlayerRanks(selectedGame);
-        setRanks(fetchedRanks.data);
+        const fetchedGameRanks = await getPlayerGameRanks(selectedGame);
+        if (fetchedGameRanks && fetchedGameRanks.data) {
+          setGameRanks(fetchedGameRanks.data);
+        } else {
+          console.error(
+            "Invalid response structure for game ranks:",
+            fetchedGameRanks
+          );
+          setGameRanks([]);
+        }
       } else {
-        setRanks(null);
+        setGameRanks([]);
       }
     };
-    fetchRanks();
+    fetchGameRanks();
   }, [selectedGame]);
 
   return (
@@ -77,7 +93,11 @@ const Dashboard = () => {
             <input type="text" placeholder="Search" />
             <button>Export Data</button>
           </div>
-          <PlayerTable players={players} ranks={ranks} />
+          <PlayerTable
+            players={players}
+            gameRanks={gameRanks}
+            seasonRanks={seasonRanks}
+          />
         </section>
       </main>
     </div>
