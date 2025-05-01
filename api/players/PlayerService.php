@@ -1,5 +1,4 @@
 <?php
-// Removed header setting to maintain separation of concerns.
 class PlayerService
 {
     private $pdo;
@@ -72,7 +71,6 @@ class PlayerService
         $exp = $data['exp'];
         $college = $data['college'];
 
-
         $stmt = $this->pdo->prepare("INSERT INTO players (first_name, last_name, position, jersey_number, height, weight, age, exp, college) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$first_name, $last_name, $position, $jersey_number, $height, $weight, $age, $exp, $college]);
 
@@ -84,7 +82,7 @@ class PlayerService
      * Deletes a player by their ID.
      *
      * @param int $id The ID of the player to delete.
-     * @return string A JSON-encoded success or error message.
+     * @return string A success or error message.
      */
     public function deletePlayer($id)
     {
