@@ -14,20 +14,31 @@ $service = new PlayerService($pdo);
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        echo $service->getPlayerById($id);
+        $player = $service->getPlayerById($id);
+        if (!$player) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Player not found']);
+        } else {
+            echo json_encode($player);
+        }
         break;
 
     case 'PUT':
         $data = json_decode(file_get_contents('php://input'), true);
-        echo $service->updatePlayer($id, $data);
+        $success = $service->updatePlayer($id, $data);
+        if (!$success) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Failed to update player']);
+        } else {
+            echo json_encode(['success' => true]);
+        }
         break;
 
     case 'DELETE':
-        echo $service->deletePlayer($id);
+        echo json_encode($service->deletePlayer($id));
         break;
 
     default:
         http_response_code(405);
         echo json_encode(['error' => 'Method not allowed']);
 }
-?>
