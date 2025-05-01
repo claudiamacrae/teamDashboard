@@ -2,7 +2,7 @@
 import { useState, useMemo } from "react";
 import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
-const PlayerTable = ({ players, gameRanks, seasonRanks }) => {
+const PlayerTable = ({ players, gameRanks, seasonRanks, selectedPlayer, onRowClick }) => {
   const headers = [
     { label: "SEASON RANK", key: "season_rank", width: "150px" },
     { label: "GAME RANK", key: "game_rank", width: "120px" },
@@ -122,7 +122,12 @@ const PlayerTable = ({ players, gameRanks, seasonRanks }) => {
       </thead>
       <tbody>
         {sortedPlayers.map((player, index) => (
-          <tr key={index}>
+          <tr
+            key={index}
+            onClick={() => onRowClick(player.id)}
+            className={selectedPlayer === player.id ? "selected" : ""}
+            style={{ cursor: "pointer" }}
+          >
             {headers.map((header) => (
               <td
                 key={header.key}

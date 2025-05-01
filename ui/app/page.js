@@ -40,6 +40,9 @@ const Dashboard = () => {
   const handleGameCardClick = (gameId) => {
     setSelectedGame(gameId === selectedGame ? null : gameId);
   };
+  const handleRowClick = (playerId) => {
+    setSelectedPlayer(playerId === selectedPlayer ? null : playerId);
+  };
 
   useEffect(() => {
     const fetchGameRanks = async () => {
@@ -95,6 +98,8 @@ const Dashboard = () => {
             players={players}
             gameRanks={gameRanks}
             seasonRanks={seasonRanks}
+            selectedPlayer={selectedPlayer}
+            onRowClick={handleRowClick}
           />
         </section>
       </main>
