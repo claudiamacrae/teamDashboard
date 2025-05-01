@@ -1,10 +1,11 @@
 "use client";
 import { useState, useMemo } from "react";
+import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
 const PlayerTable = ({ players, gameRanks, seasonRanks }) => {
   const headers = [
-    { label: "SEASON RANK", key: "season_rank", width: "80px" },
-    { label: "GAME RANK", key: "game_rank", width: "80px" },
+    { label: "SEASON RANK", key: "season_rank", width: "150px" },
+    { label: "GAME RANK", key: "game_rank", width: "120px" },
     { label: "#", key: "jersey_number", width: "" },
     { label: "FIRST NAME", key: "first_name", width: "" },
     { label: "LAST NAME", key: "last_name", width: "" },
@@ -46,7 +47,6 @@ const PlayerTable = ({ players, gameRanks, seasonRanks }) => {
       season_rank: seasonRankMap.get(player.id) || "-",
     }));
   }, [playersWithGameRanks, seasonRanks]);
-  
 
   const sortedPlayers = [...playersWithAllRanks].sort((a, b) => {
     if (sortConfig.key === null) return 0;
@@ -54,14 +54,20 @@ const PlayerTable = ({ players, gameRanks, seasonRanks }) => {
     const aValue = a[sortConfig.key];
     const bValue = b[sortConfig.key];
 
-    const isNumericKey = ["game_rank", "season_rank", "jersey_number", "height", "weight", "age", "exp"].includes(sortConfig.key);
+    const isNumericKey = [
+      "game_rank",
+      "season_rank",
+      "jersey_number",
+      "height",
+      "weight",
+      "age",
+      "exp",
+    ].includes(sortConfig.key);
     if (isNumericKey) {
       const aNum = aValue === "-" ? Infinity : Number(aValue) || 0; // Treat "-" as a high value
       const bNum = bValue === "-" ? Infinity : Number(bValue) || 0;
 
-      return sortConfig.direction === "ascending"
-      ? aNum - bNum
-      : bNum - aNum;
+      return sortConfig.direction === "ascending" ? aNum - bNum : bNum - aNum;
     }
     if (aValue < bValue) return sortConfig.direction === "ascending" ? -1 : 1;
     if (aValue > bValue) return sortConfig.direction === "ascending" ? 1 : -1;
@@ -83,15 +89,33 @@ const PlayerTable = ({ players, gameRanks, seasonRanks }) => {
           {headers.map((header, index) => (
             <th
               key={index}
+              className={`${header.key === "game_rank" ? "game-rank" : ""} ${
+                header.key === "season_rank" ? "season-rank" : ""
+              } ${sortConfig.key === header.key ? "sorted" : ""}`}
               style={{ width: header.width, cursor: "pointer" }}
               onClick={() => handleSort(header.key)}
             >
-              {header.label}
-              {sortConfig.key === header.key
-                ? sortConfig.direction === "ascending"
-                  ? " 🔼"
-                  : " 🔽"
-                : ""}
+              <span className="header-label">{header.label}</span>
+              <span className="sort-icons">
+                <FaSortUp
+                  style={{
+                    color:
+                      sortConfig.key === header.key &&
+                      sortConfig.direction === "ascending"
+                        ? "gold"
+                        : "gray",
+                  }}
+                />
+                <FaSortDown
+                  style={{
+                    color:
+                      sortConfig.key === header.key &&
+                      sortConfig.direction === "descending"
+                        ? "gold"
+                        : "gray",
+                  }}
+                />
+              </span>
             </th>
           ))}
         </tr>
@@ -100,7 +124,14 @@ const PlayerTable = ({ players, gameRanks, seasonRanks }) => {
         {sortedPlayers.map((player, index) => (
           <tr key={index}>
             {headers.map((header) => (
-              <td key={header.key}>{player[header.key]}</td>
+              <td
+                key={header.key}
+                className={`${header.key === "game_rank" ? "game-rank" : ""} ${
+                  header.key === "season_rank" ? "season-rank" : ""
+                }`}
+              >
+                {player[header.key]}
+              </td>
             ))}
           </tr>
         ))}

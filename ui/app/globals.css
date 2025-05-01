@@ -47,7 +47,8 @@ body {
 
 .team-name {
   font-size: 2rem;
-  font-weight: 300; /* Thin text */
+  font-weight: 300;
+  /* Thin text */
   margin: 0;
 }
 
@@ -55,12 +56,6 @@ body {
   font-size: 1rem;
   font-weight: 80;
   letter-spacing: 2px;
-}
-
-.player-table thead {
-  background-color: #310101;
-  color: white;
-  border-color: #310101;
 }
 
 .game-bar {
@@ -80,7 +75,7 @@ body {
 }
 
 .card.selected {
-  background: #bbb;
+  background: #e4e3e3;
 }
 
 .main-content {
@@ -111,15 +106,70 @@ body {
   border-collapse: collapse;
 }
 
-.player-table th{
-  user-select: none;
+.player-table td.season-rank {
+  background-color: rgb(72, 71, 71); /* Light background for cells */
+  color: gold; /* Black text for cells */
+  font-weight: bold; /* Bold text */
 }
-th:hover {
-  background-color: #510101; 
+
+.player-table td.game-rank {
+  background-color: lightgray; /* Light background for cells */
+  color: black; /* Black text for cells */
+  font-weight: bold; /* Bold text */
+}
+
+.player-table th {
+  user-select: none;
+  cursor: pointer;
+  text-align: center;
+  padding: 0.5rem;
+  background-color: #310101;
+  color: white;
+  border-bottom: 2px solid #af0101;
+  position: relative;
+}
+
+.player-table th .header-label {
+  display: inline-block;
+  font-weight: bold;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.player-table th .sort-icons {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-left: 0.25rem;
 }
 
 .player-table td {
+  text-align: center;
   border: 1px solid #ddd;
   padding: 0.5rem;
 }
 
+.player-table thead {
+  background-color: #310101;
+  color: white;
+}
+
+.player-table th .sort-icons svg {
+  font-size: 0.8rem; /* Adjust icon size */
+  margin: 0; /* Remove extra spacing */
+  line-height: 1;
+}
+
+.player-table th .sort-icons svg:first-child {
+  margin-bottom: -2px; /* Slight overlap for the up arrow */
+}
+
+.player-table th .sort-icons svg:last-child {
+  margin-top: -2px; /* Slight overlap for the down arrow */
+}
+
+.player-table th.sorted {
+  color: gold;
+}
