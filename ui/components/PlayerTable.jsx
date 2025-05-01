@@ -29,6 +29,7 @@ const PlayerTable = ({
   });
 
   const playersWithGameRanks = useMemo(() => {
+    console.log("gameRanks:", gameRanks);
     if (!gameRanks) return players; // <- prevent crash when ranks is null
     const gameRankMap = new Map();
     gameRanks.forEach((gRank) => {
@@ -124,27 +125,34 @@ const PlayerTable = ({
               </span>
             </th>
           ))}
+          <th
+            className="w-[300px] px-4 py-2 border-b border-gray-200 bg-white"
+            aria-hidden="true"
+          ></th>
         </tr>
       </thead>
       <tbody>
         {sortedPlayers.map((player, index) => (
-            <tr
-              key={index}
-              onClick={() => onRowClick(player.id)}
-              className={selectedPlayer === player.id ? "selected" : ""}
-              style={{ cursor: "pointer" }}
-            >
-              {headers.map((header) => (
-                <td
-                  key={header.key}
-                  className={`${
-                    header.key === "game_rank" ? "game-rank" : ""
-                  } ${header.key === "season_rank" ? "season-rank" : ""}`}
-                >
-                  {player[header.key]}
-                </td>
-              ))}
-            </tr>
+          <tr
+            key={index}
+            onClick={() => onRowClick(player.id)}
+            className={`hover:bg-gray-50 px-4 py-2 ${
+              selectedPlayer === player.id ? "selected" : ""
+            }`}
+            style={{ cursor: "pointer" }}
+          >
+            {headers.map((header) => (
+              <td
+                key={header.key}
+                className={`${header.key === "game_rank" ? "game-rank" : ""} ${
+                  header.key === "season_rank" ? "season-rank" : ""
+                }`}
+              >
+                {player[header.key]}
+              </td>
+            ))}
+            <td className="w-[300px]"></td>
+          </tr>
         ))}
       </tbody>
     </table>

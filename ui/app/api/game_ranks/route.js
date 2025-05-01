@@ -6,7 +6,7 @@ export async function GET(request) {
 
   let apiUrl = "http://localhost:8000/player_game_ranks/rank.php";
   if (week) {
-    apiUrl += `?week=${encodeURIComponent(week)}`;
+    apiUrl += `?game_id=${encodeURIComponent(week)}`;
   }
   if (player_id) {
     apiUrl += `&player_id=${encodeURIComponent(player_id)}`;

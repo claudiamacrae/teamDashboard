@@ -3,9 +3,9 @@
 :root {
   --background: #7f0c0c;
   --foreground: black;
-  --gold: #d4af37;
+  --gold: #b3995d;
   --card-selected-bg: #e4e3e3;
-  --main-content-bg: #f9f1f1;
+  --main-content-bg: white;
 }
 
 @theme inline {
@@ -27,7 +27,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(to right, #af0101, #310101);
+  background: linear-gradient(to right, #aa0000, #550000);
   padding: 1rem 2rem;
 }
 
@@ -68,19 +68,6 @@ body {
   padding: 1rem;
 }
 
-.card {
-  background: var(--gold);
-  padding: 0.5rem;
-  border-radius: 8px;
-  min-width: 150px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.card.selected {
-  background: var(--card-selected-bg);
-}
-
 .main-content {
   display: flex;
   padding: 1rem;
@@ -98,31 +85,10 @@ body {
   flex: 3;
 }
 
-.player-info-cell {
-  flex: 1;
-  margin-left: 1rem;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.player-info-card {
-  flex: 2;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.player-info-card h3 {
-  margin: 0 0 0.5rem;
-}
-
-.player-info-card p {
-  margin: 0.25rem 0;
+.player-info-aside {
+  transform: translateY(-50%);
+  right: 1%;
+  width: 300px;
 }
 
 .player-table {
@@ -131,13 +97,13 @@ body {
 }
 
 .player-table td.season-rank {
-  background-color: rgb(72, 71, 71);
+  background-color: #333333;
   color:var(--gold);
   font-weight: bold;
 }
 
 .player-table td.game-rank {
-  background-color: lightgray;
+  background-color: #f5f5f5;
   color: black;
   font-weight: bold;
 }
@@ -147,9 +113,9 @@ body {
   cursor: pointer;
   text-align: center;
   padding: 0.5rem;
-  background-color: #310101;
+  background-color: #370000;
   color: white;
-  border-bottom: 2px solid #af0101;
+  border-bottom: 16px solid #6b0000;
   position: relative;
 }
 

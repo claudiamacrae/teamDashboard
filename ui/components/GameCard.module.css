@@ -1,0 +1,92 @@
+.card {
+    background: var(--gold);
+    padding: 1rem;
+    border-radius: 8px;
+    min-width: 150px;
+    text-align: center;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.oppLogo {
+    width: 40px;
+    height: 40px;
+    margin: 0.5rem 0;
+  }
+
+.card.selected {
+    background: var(--card-selected-bg);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.selected {
+    border: 2px solid var(--foreground);
+    background: var(--card-selected-bg);
+}
+
+.date {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+}
+
+.location {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+}
+
+.vs {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--foreground);
+    margin: 0.5rem 0;
+    text-transform: uppercase;
+}
+
+.opponent {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.opponentPart1 {
+    font-weight: 500;
+}
+
+.opponentPart2 {
+    font-weight: 800;
+}
+
+.gameScore {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+.result {
+    font-weight: 505;
+}
+
+.win {
+    color: var(--win-color, #28a745);
+}
+
+.loss {
+    color: var(--loss-color, #dc3545);
+}
+
+.score {
+    font-size: 1rem;
+}

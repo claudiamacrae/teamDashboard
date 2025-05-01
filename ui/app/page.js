@@ -75,7 +75,10 @@ const Dashboard = () => {
       }
       try {
         const fetchedGameRanks = await getPlayerGameRanks(selectedGame);
-        setGameRanks(fetchedGameRanks ?? []);
+        if (!Array.isArray(fetchedGameRanks)) {
+          throw new Error("Invalid rank data format");
+        }
+        setGameRanks(fetchedGameRanks);
       } catch (error) {
         console.error("Error fetching game ranks:", error);
         setGameRanks([]);
@@ -93,9 +96,10 @@ const Dashboard = () => {
       const nameMatch = `${player.first_name} ${player.last_name}`
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
-      const positionMatch = positionFilter === "" || player.position === positionFilter;
+      const positionMatch =
+        positionFilter === "" || player.position === positionFilter;
       return nameMatch && positionMatch;
-  });
+    });
   }, [players, searchQuery]);
 
   return (
@@ -122,9 +126,9 @@ const Dashboard = () => {
         ))}
       </section>
 
-      <main className="main-content flex">
+      <main className="main-content flex relative">
         {showFilters && (
-          <aside className="w-64 min-w-[16rem] bg-white border-r p-4 transition-all">
+          <aside className="filter-panel w-64 bg-gray-100 border-r p-4 transition-all duration-300">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Filters</h2>
               <button onClick={() => setShowFilters(false)}>&times;</button>
@@ -147,7 +151,7 @@ const Dashboard = () => {
           </aside>
         )}
 
-        <section className={`table-section flex-1 transition-all duration-300 ${showFilters ? "ml-0" : ""}`}>
+        <section className="table-section flex-1 relative">
           <div className="table-toolbar flex items-center justify-between p-4 border-b bg-white">
             <button
               onClick={() => setShowFilters(!showFilters)}
@@ -181,28 +185,26 @@ const Dashboard = () => {
         </section>
 
         {selectedPlayerData && (
-          <aside className="player-info-aside">
-            <div className="player-info-card">
-              <h3>
-                {selectedPlayerData.first_name} {selectedPlayerData.last_name}
-              </h3>
-              <p>
-                <strong>Position:</strong> {selectedPlayerData.position}
-              </p>
-              <p>
-                <strong>Height:</strong> {selectedPlayerData.height}
-              </p>
-              <p>
-                <strong>Weight:</strong> {selectedPlayerData.weight}
-              </p>
-              <p>
-                <strong>Age:</strong> {selectedPlayerData.age}
-              </p>
-              <p>
-                <strong>College:</strong> {selectedPlayerData.college}
-              </p>
-              <div className="player-graph"></div>
-            </div>
+          <aside className="player-info-aside absolute bg-white rounded-xl shadow-lg p-4 z-20 transition-all">
+            <h3 className="text-lg font-semibold mb-2">
+              {selectedPlayerData.first_name} {selectedPlayerData.last_name}
+            </h3>
+            <p>
+              <strong>Position:</strong> {selectedPlayerData.position}
+            </p>
+            <p>
+              <strong>Height:</strong> {selectedPlayerData.height}
+            </p>
+            <p>
+              <strong>Weight:</strong> {selectedPlayerData.weight}
+            </p>
+            <p>
+              <strong>Age:</strong> {selectedPlayerData.age}
+            </p>
+            <p>
+              <strong>College:</strong> {selectedPlayerData.college}
+            </p>
+            <div className="player-graph"></div>
           </aside>
         )}
       </main>
