@@ -1,38 +1,27 @@
 <?php
-require_once '../config.php';
+require '../config.php';
+require 'GameRankService.php';
 header('Content-Type: application/json');
+
+$service = new GameRankService($pdo);
 
 try {
     $week = isset($_GET['week']) ? (int)$_GET['week'] : null;
     $playerId = isset($_GET['player_id']) ? (int)$_GET['player_id'] : null;
 
-    // Start building the SQL
-    $sql = "SELECT `id`, `player_id`, `game_id`, `rank` FROM player_game_ranks";
-
-    $conditions = [];
-    $params = [];
-
-    if ($week !== null) {
-        $conditions[] = 'game_id = :week';
-        $params['week'] = $week;
+    if ($week && $playerId) {
+        echo $service->getRank($playerId, $week);
     }
-    if ($playerId !== null) {
-        $conditions[] = 'player_id = :playerId';
-        $params['playerId'] = $playerId;
+    elseif ($week) {
+        echo $service->getRanksByGame($week);
     }
-    if (!empty($conditions)) {
-        $sql .= ' WHERE ' . implode(' AND ', $conditions);
+    elseif ($playerId) {
+        echo $service->getRanksByPlayer($playerId);
     }
-
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-
-    $ranks = $stmt->fetchAll();
-    
-    echo json_encode([
-        'success' => true,
-        'data' => $ranks
-    ]);
+    else {
+        http_response_code(400);
+        echo json_encode(['error' => 'Invalid parameters']);
+    }
 } catch (PDOException $e) {
     echo json_encode([
         'success' => false,

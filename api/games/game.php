@@ -1,39 +1,28 @@
 <?php
 require '../config.php';
+require 'GameService.php';
 header('Content-Type: application/json');
 
 $id = $_GET['id'] ?? null;
 if (!$id) {
     http_response_code(400);
-    echo json_encode(['error' => 'Player ID is required']);
+    echo json_encode(['error' => 'Game ID is required']);
     exit;
 }
+$service = new GameService($pdo);
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $stmt = $pdo->prepare("SELECT * FROM games WHERE id = ?");
-        $stmt->execute([$id]);
-        echo json_encode($stmt->fetch());
+        echo $service->getGameById($id);
         break;
 
     case 'PUT':
         $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("UPDATE games SET opponent=?, date=?, location=?, team_score=?, opponent_score=? WHERE id=?");
-        $stmt->execute([
-            $data['opponent'],
-            $data['date'],
-            $data['location'],
-            $data['team_score'],
-            $data['opponent_score'],
-            $id
-        ]);
-        echo json_encode(['success' => true]);
+        echo $service->updateGame($id, $data);
         break;
 
     case 'DELETE':
-        $stmt = $pdo->prepare("DELETE FROM games WHERE id = ?");
-        $stmt->execute([$id]);
-        echo json_encode(['success' => true]);
+        echo $service->deleteGame($id);
         break;
 
     default:

@@ -28,8 +28,7 @@ async function getPlayerGameRanks(gameId) {
   if (!ranksF.ok) {
     throw new Error("Failed to fetch player ranks");
   }
-  let data = await ranksF.json(); // assuming your API returns JSON
-  // console.log("Fetched ranks:", data); // Debugging statement removed for production
+  let data = ranksF.json();
   return data;
 }
 
@@ -44,21 +43,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchGameRanks = async () => {
-      if (selectedGame) {
+      if (!selectedGame) {
+        setGameRanks([]);
+        return;
+      }
+
+      try {
         const fetchedGameRanks = await getPlayerGameRanks(selectedGame);
-        if (fetchedGameRanks && fetchedGameRanks.data) {
-          setGameRanks(fetchedGameRanks.data);
-        } else {
-          console.error(
-            "Invalid response structure for game ranks:",
-            fetchedGameRanks
-          );
-          setGameRanks([]);
-        }
-      } else {
+        setGameRanks(fetchedGameRanks ?? []);
+      } catch (error) {
+        console.error("Error fetching game ranks:", error);
         setGameRanks([]);
       }
     };
+
     fetchGameRanks();
   }, [selectedGame]);
 

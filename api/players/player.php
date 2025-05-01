@@ -1,5 +1,6 @@
 <?php
 require '../config.php';
+require 'PlayerService.php';
 header('Content-Type: application/json');
 
 $id = $_GET['id'] ?? null;
@@ -9,35 +10,20 @@ if (!$id) {
     exit;
 }
 
+$service = new PlayerService($pdo);
+
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'GET':
-        $stmt = $pdo->prepare("SELECT * FROM players WHERE id = ?");
-        $stmt->execute([$id]);
-        echo json_encode($stmt->fetch());
+        echo $service->getPlayerById($id);
         break;
 
     case 'PUT':
         $data = json_decode(file_get_contents('php://input'), true);
-        $stmt = $pdo->prepare("UPDATE players SET first_name=?, last_name=?, position=?, jersey_number=?, height=?, weight=?, age=?, exp=?, college=? WHERE id=?");
-        $stmt->execute([
-            $data['first_name'],
-            $data['last_name'],
-            $data['position'],
-            $data['jersey_number'],
-            $data['height'],
-            $data['weight'],
-            $data['age'],
-            $data['exp'],
-            $data['college'],
-            $id
-        ]);
-        echo json_encode(['success' => true]);
+        echo $service->updatePlayer($id, $data);
         break;
 
     case 'DELETE':
-        $stmt = $pdo->prepare("DELETE FROM players WHERE id = ?");
-        $stmt->execute([$id]);
-        echo json_encode(['success' => true]);
+        echo $service->deletePlayer($id);
         break;
 
     default:
