@@ -3,6 +3,9 @@
 :root {
   --background: #7f0c0c;
   --foreground: black;
+  --gold: #d4af37;
+  --card-selected-bg: #e4e3e3;
+  --main-content-bg: #f9f1f1;
 }
 
 @theme inline {
@@ -25,7 +28,7 @@ header {
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(to right, #af0101, #310101);
-  padding: 1rem 3rem;
+  padding: 1rem 2rem;
 }
 
 body {
@@ -54,7 +57,7 @@ body {
 
 .season-year {
   font-size: 1rem;
-  font-weight: 80;
+  font-weight: 100;
   letter-spacing: 2px;
 }
 
@@ -66,7 +69,7 @@ body {
 }
 
 .card {
-  background: #d4af37;
+  background: var(--gold);
   padding: 0.5rem;
   border-radius: 8px;
   min-width: 150px;
@@ -75,19 +78,19 @@ body {
 }
 
 .card.selected {
-  background: #e4e3e3;
+  background: var(--card-selected-bg);
 }
 
 .main-content {
   display: flex;
   padding: 1rem;
   gap: 1rem;
-  background-color: #f9f1f1;
+  background-color: var(--main-content-bg);
 }
 
 .filters {
   flex: 1;
-  background: #f5f5f5;
+  background: #0ef4ca;
   padding: 1rem;
 }
 
@@ -95,10 +98,31 @@ body {
   flex: 3;
 }
 
-.player-profile {
-  flex: 2;
-  background: #f5f5f5;
+.player-info-cell {
+  flex: 1;
+  margin-left: 1rem;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.player-info-card {
+  flex: 2;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.player-info-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.player-info-card p {
+  margin: 0.25rem 0;
 }
 
 .player-table {
@@ -107,15 +131,15 @@ body {
 }
 
 .player-table td.season-rank {
-  background-color: rgb(72, 71, 71); /* Light background for cells */
-  color: gold; /* Black text for cells */
-  font-weight: bold; /* Bold text */
+  background-color: rgb(72, 71, 71);
+  color:var(--gold);
+  font-weight: bold;
 }
 
 .player-table td.game-rank {
-  background-color: lightgray; /* Light background for cells */
-  color: black; /* Black text for cells */
-  font-weight: bold; /* Bold text */
+  background-color: lightgray;
+  color: black;
+  font-weight: bold;
 }
 
 .player-table th {
@@ -171,10 +195,10 @@ body {
 }
 
 .player-table th.sorted {
-  color: gold;
+  color: var(--gold);
 }
 
 .player-table tr.selected {
   background-color: #f5d6d6; /* Light red bg */
-  border: 4px solid #af0101; /* Dark red border */
+  border: 2px solid #af0101; /* Dark red border */
 }

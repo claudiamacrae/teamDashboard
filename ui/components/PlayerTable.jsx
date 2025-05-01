@@ -1,8 +1,14 @@
 "use client";
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
 
-const PlayerTable = ({ players, gameRanks, seasonRanks, selectedPlayer, onRowClick }) => {
+const PlayerTable = ({
+  players,
+  gameRanks,
+  seasonRanks,
+  selectedPlayer,
+  onRowClick,
+}) => {
   const headers = [
     { label: "SEASON RANK", key: "season_rank", width: "150px" },
     { label: "GAME RANK", key: "game_rank", width: "120px" },
@@ -122,23 +128,23 @@ const PlayerTable = ({ players, gameRanks, seasonRanks, selectedPlayer, onRowCli
       </thead>
       <tbody>
         {sortedPlayers.map((player, index) => (
-          <tr
-            key={index}
-            onClick={() => onRowClick(player.id)}
-            className={selectedPlayer === player.id ? "selected" : ""}
-            style={{ cursor: "pointer" }}
-          >
-            {headers.map((header) => (
-              <td
-                key={header.key}
-                className={`${header.key === "game_rank" ? "game-rank" : ""} ${
-                  header.key === "season_rank" ? "season-rank" : ""
-                }`}
-              >
-                {player[header.key]}
-              </td>
-            ))}
-          </tr>
+            <tr
+              key={index}
+              onClick={() => onRowClick(player.id)}
+              className={selectedPlayer === player.id ? "selected" : ""}
+              style={{ cursor: "pointer" }}
+            >
+              {headers.map((header) => (
+                <td
+                  key={header.key}
+                  className={`${
+                    header.key === "game_rank" ? "game-rank" : ""
+                  } ${header.key === "season_rank" ? "season-rank" : ""}`}
+                >
+                  {player[header.key]}
+                </td>
+              ))}
+            </tr>
         ))}
       </tbody>
     </table>
