@@ -29,7 +29,6 @@ const PlayerTable = ({
   });
 
   const playersWithGameRanks = useMemo(() => {
-    console.log("gameRanks:", gameRanks);
     if (!gameRanks) return players; // <- prevent crash when ranks is null
     const gameRankMap = new Map();
     gameRanks.forEach((gRank) => {

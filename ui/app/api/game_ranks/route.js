@@ -1,10 +1,12 @@
+import { getApiBaseUrl } from "@/utils/getApiBaseUrl";
 export async function GET(request) {
+  const baseUrl = getApiBaseUrl();
   console.log("requst", request.url);
   const { searchParams } = new URL(request.url);
   const week = searchParams.get("week");
   const player_id = searchParams.get("player_id");
 
-  let apiUrl = "http://localhost:8000/player_game_ranks/rank.php";
+  let apiUrl = `${baseUrl}/player_game_ranks/rank.php`;
   if (week) {
     apiUrl += `?game_id=${encodeURIComponent(week)}`;
   }

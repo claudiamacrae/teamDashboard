@@ -4,11 +4,15 @@ import PlayerTable from "@/components/PlayerTable";
 import GameCard from "@/components/GameCard";
 import PlayerCard from "@/components/PlayerCard";
 
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+if (!baseUrl) {
+  throw new Error("NEXT_PUBLIC_API_BASE_URL is not defined");
+}
 async function fetchInitialData() {
   const [playersF, gamesF, seasonRanksF] = await Promise.all([
-    fetch("http://localhost:3000/api/players", { cache: "no-store" }),
-    fetch("http://localhost:3000/api/games", { cache: "no-store" }),
-    fetch("http://localhost:3000/api/season_ranks", { cache: "no-store" }),
+    fetch(`${baseUrl}/api/players`, { cache: "no-store" }),
+    fetch(`${baseUrl}/api/games`, { cache: "no-store" }),
+    fetch(`${baseUrl}/api/season_ranks`, { cache: "no-store" }),
   ]);
 
   if (!playersF.ok || !gamesF.ok || !seasonRanksF.ok) {
@@ -26,7 +30,7 @@ async function fetchInitialData() {
 
 async function getPlayerGameRanks(gameId) {
   let ranksF = await fetch(
-    `http://localhost:3000/api/game_ranks?week=${gameId}`,
+    `${baseUrl}/api/game_ranks?week=${gameId}`,
     { cache: "no-store" }
   );
   if (!ranksF.ok) {
