@@ -26,7 +26,7 @@ const GameCard = ({
 
   return (
     <div
-      className={`${styles.card} ${isSelected ? "selected" : ""}`} // Add 'selected' class if the card is selected
+      className={`${styles.card} ${isSelected ? styles.selected : ""}`} // Add 'selected' class if the card is selected
       onClick={onClick}
     >
       <div className={styles.date}>{date}</div>

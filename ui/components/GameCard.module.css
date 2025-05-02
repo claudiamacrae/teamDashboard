@@ -16,18 +16,13 @@
     margin: 0.5rem 0;
   }
 
-.card.selected {
+.selected {
     background: var(--card-selected-bg);
 }
 
 .card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.selected {
-    border: 2px solid var(--foreground);
-    background: var(--card-selected-bg);
 }
 
 .date {
@@ -77,14 +72,6 @@
 
 .result {
     font-weight: 505;
-}
-
-.win {
-    color: var(--win-color, #28a745);
-}
-
-.loss {
-    color: var(--loss-color, #dc3545);
 }
 
 .score {

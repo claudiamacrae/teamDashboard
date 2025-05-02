@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from "react";
 import PlayerTable from "@/components/PlayerTable";
 import GameCard from "@/components/GameCard";
+import PlayerCard from "@/components/PlayerCard";
 
 async function fetchInitialData() {
   const [playersF, gamesF, seasonRanksF] = await Promise.all([
@@ -45,6 +46,8 @@ const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [positionFilter, setPositionFilter] = useState("");
+  const [minExpFilter, setMinExpFilter] = useState(0);
+  const [maxExpFilter, setMaxExpFilter] = useState(Infinity);
 
   const handleGameCardClick = (gameId) => {
     setSelectedGame(gameId === selectedGame ? null : gameId);
@@ -92,18 +95,37 @@ const Dashboard = () => {
   }, [players, selectedPlayer]);
 
   const filteredPlayers = useMemo(() => {
+    if (
+      !searchQuery &&
+      positionFilter === "" &&
+      maxExpFilter === "" &&
+      minExpFilter === ""
+    )
+      return players;
+
+    const searchQueryLower = searchQuery.toLowerCase();
     return players.filter((player) => {
-      const nameMatch = `${player.first_name} ${player.last_name}`
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      const positionMatch =
-        positionFilter === "" || player.position === positionFilter;
-      return nameMatch && positionMatch;
+      const nameMatch = searchQueryLower
+        ? `${player.first_name} ${player.last_name} ${player.college}`
+            .toLowerCase()
+            .includes(searchQueryLower)
+        : true;
+
+      const positionMatch = positionFilter
+        ? player.position === positionFilter
+        : true;
+
+      const expMatch =
+        player.exp >= (minExpFilter || 0) &&
+        player.exp <= (maxExpFilter !== Infinity ? maxExpFilter : Infinity);
+
+      return nameMatch && positionMatch && expMatch;
     });
-  }, [players, searchQuery]);
+  }, [players, searchQuery, positionFilter, minExpFilter, maxExpFilter]);
 
   return (
     <div className="dashboard">
+      <div className="gradient-bg">
       <header className="header">
         <div className="header-left">
           <img src="sfLogo.svg" alt="49ers Logo" className="logo" />
@@ -125,7 +147,7 @@ const Dashboard = () => {
           />
         ))}
       </section>
-
+      </div>
       <main className="main-content flex relative">
         {showFilters && (
           <aside className="filter-panel w-64 bg-gray-100 border-r p-4 transition-all duration-300">
@@ -134,7 +156,7 @@ const Dashboard = () => {
               <button onClick={() => setShowFilters(false)}>&times;</button>
             </div>
 
-            <div className="mb-4">
+            <div className="position-drop-down mb-4">
               <label className="block text-sm mb-1">Position</label>
               <select
                 value={positionFilter}
@@ -147,6 +169,30 @@ const Dashboard = () => {
                 <option value="WR">WR</option>
                 <option value="TE">TE</option>
               </select>
+            </div>
+            <div>
+              <input
+                type="number"
+                placeholder="Min Exp"
+                className="border p-2 rounded w-24"
+                value={minExpFilter !== 0 ? minExpFilter : ""}
+                onChange={(e) => {
+                  const minVal = e.target.value;
+                  setMinExpFilter(minVal === "" ? 0 : parseInt(minVal, 10));
+                }}
+              />
+              <input
+                type="number"
+                placeholder="Max Exp"
+                className="border p-2 rounded w-24"
+                value={maxExpFilter !== Infinity ? maxExpFilter : ""}
+                onChange={(e) => {
+                  const maxVal = e.target.value;
+                  setMaxExpFilter(
+                    maxVal === "" ? Infinity : parseInt(maxVal, 10)
+                  );
+                }}
+              />
             </div>
           </aside>
         )}
@@ -186,25 +232,7 @@ const Dashboard = () => {
 
         {selectedPlayerData && (
           <aside className="player-info-aside absolute bg-white rounded-xl shadow-lg p-4 z-20 transition-all">
-            <h3 className="text-lg font-semibold mb-2">
-              {selectedPlayerData.first_name} {selectedPlayerData.last_name}
-            </h3>
-            <p>
-              <strong>Position:</strong> {selectedPlayerData.position}
-            </p>
-            <p>
-              <strong>Height:</strong> {selectedPlayerData.height}
-            </p>
-            <p>
-              <strong>Weight:</strong> {selectedPlayerData.weight}
-            </p>
-            <p>
-              <strong>Age:</strong> {selectedPlayerData.age}
-            </p>
-            <p>
-              <strong>College:</strong> {selectedPlayerData.college}
-            </p>
-            <div className="player-graph"></div>
+            <PlayerCard player={selectedPlayerData}></PlayerCard>
           </aside>
         )}
       </main>

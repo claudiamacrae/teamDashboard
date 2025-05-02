@@ -27,8 +27,11 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(to right, #aa0000, #550000);
   padding: 1rem 2rem;
+}
+
+.gradient-bg {
+  background: linear-gradient(to right, #aa0000, #550000);
 }
 
 body {
@@ -75,7 +78,7 @@ body {
   background-color: var(--main-content-bg);
 }
 
-.filters {
+.filter-panel {
   flex: 1;
   background: #0ef4ca;
   padding: 1rem;
