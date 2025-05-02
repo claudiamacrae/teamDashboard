@@ -12,11 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $service = new PlayerSeasonRankService($pdo);
 
 try {
-    $service->recalculateAllSeasonRanks();
-    if (!$service){
+    $seasonRanks = $service->recalculateAllSeasonRanks();
+    if (!$seasonRanks){
         throw new Exception('Failed to recalculate ranks. Service is not initialized properly.');
     }
-    echo json_encode(['success' => true]);
+    echo json_encode($seasonRanks);
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(['error' => $e->getMessage()]);

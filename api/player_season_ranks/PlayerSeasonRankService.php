@@ -12,13 +12,13 @@ class PlayerSeasonRankService {
     }
 
     public function getSeasonRankByPlayerId($playerId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM player_season_ranks WHERE player_id = ?");
+        $stmt = $this->pdo->prepare("SELECT `rank` FROM player_season_ranks WHERE player_id = ?");
         $stmt->execute([$playerId]);
         return $stmt->fetch();
     }
 
     public function getAllGameRanksByPlayerId($playerId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM player_game_ranks WHERE player_id = ?");
+        $stmt = $this->pdo->prepare("SELECT `rank` FROM player_game_ranks WHERE player_id = ?");
         $stmt->execute([$playerId]);
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
@@ -39,16 +39,14 @@ class PlayerSeasonRankService {
         if (empty($ranks)) {
             return null;
         }
-        return round(array_sum($ranks) / count($ranks), 2);
+        $res = round(array_sum($ranks) / count($ranks), 2);
+        error_log("Ranks for player $playerId: " . implode(", ", $ranks));
+        error_log("Calculated new season rank for player $playerId: $res");
+        return $res;
     }
 
-    public function upsertSeasonRank($playerId) {
-        $newRank = $this->calculateSeasonRankForPlayer($playerId);
-        if ($newRank === null) {
-            throw new Exception("Season rank could not be calculated for player $playerId");
-        }
+    public function upsertSeasonRank($playerId, $newRank) {
         $currentRank = $this->getSeasonRankByPlayerId($playerId);
-
         if ($currentRank) {
             $this->updateSeasonRank($playerId, $newRank);
         } else {
@@ -59,12 +57,31 @@ class PlayerSeasonRankService {
     }
 
     public function recalculateAllSeasonRanks() {
+        // Fetch all players and calculate their total game ranks
         $stmt = $this->pdo->query("SELECT DISTINCT player_id FROM player_game_ranks");
         $playerIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
+        $playerRanks = [];
         foreach ($playerIds as $playerId) {
-            $this->upsertSeasonRank($playerId);
+            //sum of all game ranks for the player
+            $sum = $this->getAllGameRanksByPlayerId($playerId);
+            if ($sum) {
+                $playerRanks[] = ['player_id' => $playerId, 'rank_sum' => $sum];;
+            }
         }
+        // Sort players by their total ranks
+        usort($playerRanks, function ($a, $b){
+            return $a['rank_sum'] <=> $b['rank_sum'];
+        });
+
+        //Assign unique ranks sequentially
+        $rank = 1;
+        foreach ($playerRanks as $player) {
+            $this->upsertSeasonRank($player['player_id'], $rank);
+            $rank++;
+        }
+        // Return the updated ranks
+        return $this->getAllSeasonRanks();
     }
 }
 ?>
