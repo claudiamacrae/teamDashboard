@@ -51,4 +51,22 @@ class GameRankService
         $stmt->execute([$playerId, $gameId]);
         return $stmt->fetch();
     }
+
+    public function updateRank($playerId, $gameId, $newRank)
+    {
+        $stmt = $this->pdo->prepare("UPDATE player_game_ranks SET rank = ? WHERE player_id = ? AND game_id = ?");
+        return $stmt->execute([$newRank, $playerId, $gameId]);
+    }
+
+    public function createRank($playerId, $gameId, $rank)
+    {
+        $stmt = $this->pdo->prepare("INSERT INTO player_game_ranks (player_id, game_id, rank) VALUES (?, ?, ?)");
+        return $stmt->execute([$playerId, $gameId, $rank]);
+    }
+
+    public function deleteRank($playerId, $gameId)
+    {
+        $stmt = $this->pdo->prepare("DELETE FROM player_game_ranks WHERE player_id = ? AND game_id = ?");
+        return $stmt->execute([$playerId, $gameId]);
+    }
 }

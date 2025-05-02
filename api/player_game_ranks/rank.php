@@ -46,6 +46,26 @@ try {
             }
             echo json_encode($success);
             break;
+        case 'PUT':
+            $data = json_decode(file_get_contents('php://input'), true);
+            $success = $service->updateRank($data['player_id'], $data['game_id'], $data['rank']);
+            if (!$success) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Failed to update player']);
+            } else {
+                echo json_encode(['success' => true]);
+            }
+            break;
+        case 'DELETE':
+            $data = json_decode(file_get_contents('php://input'), true);
+            $success = $service->deleteRank($data['player_id'], $data['game_id']);
+            if (!$success) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Failed to delete rank']);
+            } else {
+                echo json_encode(['success' => true]);
+            }
+            break;
         default:
             http_response_code(405);
             echo json_encode(['error' => 'Method not allowed']);

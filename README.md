@@ -60,14 +60,14 @@ Here’s a brief overview of the available API endpoints to interact with the `g
 
 | Endpoint      | Method | Description                           |
 | ------------- | ------ | ------------------------------------- |
-| `/games`      | GET    | Retrieves a list of all games         |
-| `/games/{id}` | GET    | Retrieves a specific game by its `id` |
-| `/games`      | POST   | Creates a new game                    |
-| `/games/{id}` | PUT    | Updates a specific game by its `id`   |
-| `/games/{id}` | DELETE | Deletes a specific game by its `id`   |
+| `/games/index.php`      | GET    | Retrieves a list of all games         |
+| `/games/game.php?={id}` | GET    | Retrieves a specific game by its `id` |
+| `/games/index.php`      | POST   | Creates a new game                    |
+| `/games/game.php?={id}` | PUT    | Updates a specific game by its `id`   |
+| `/games/game.php?={id}` | DELETE | Deletes a specific game by its `id`   |
 
 #### **Example Responses**
-#### **GET /games**
+#### **GET /games/index.php**
 Retrieves a list of all games.
 
 ##### **Response:**
@@ -86,7 +86,7 @@ Retrieves a list of all games.
 ]
 ```
 
-#### **GET /games/{id}**
+#### **GET /games/game.php?={id}**
 Retrieves a specific game by its `id`.
 
 ##### **Parameters:**
@@ -134,7 +134,7 @@ Creates a new game record.
 }
 ```
 
-#### **PUT /games/{id}**
+#### **PUT /games/game.php?={id}**
 
 Updates a game record.
 
@@ -167,7 +167,7 @@ Updates a game record.
 }
 ```
 
-#### **DELETE /games/{id}**
+#### **DELETE /games/game.php?={id}**
 
 Deletes a game record.
 
@@ -189,15 +189,15 @@ Deletes a game record.
 
 | Endpoint        | Method | Description                         |
 | --------------- | ------ | ----------------------------------- |
-| `/players`      | GET    | Retrieves a list of all players     |
-| `/players/{id}` | GET    | Retrieves a specific player by `id` |
-| `/players`      | POST   | Creates a new player                |
-| `/players/{id}` | PUT    | Updates a player by `id`            |
-| `/players/{id}` | DELETE | Deletes a player by `id`            |
+| `/players/index.php`      | GET    | Retrieves a list of all players     |
+| `/players/player.php?={id}` | GET    | Retrieves a specific player by `id` |
+| `/players/index.php`      | POST   | Creates a new player                |
+| `/players/player.php?={id}` | PUT    | Updates a player by `id`            |
+| `/players/player.php?={id}` | DELETE | Deletes a player by `id`            |
 
 #### **Example Response**
 
-#### **GET /players**
+#### **GET /players/index.php**
 
 Retrieves a list of all players.
 
@@ -210,7 +210,7 @@ Retrieves a list of all players.
     "first_name": "Joe",
     "last_name": "Smith",
     "jersey_number": 12,
-    "position": "Quarterback",
+    "position": "QB",
     "height": 75,
     "weight": 220,
     "age": 25,
@@ -221,7 +221,7 @@ Retrieves a list of all players.
 ]
 ```
 
-#### **GET /players/{id}**
+#### **GET /players/player.php?={id}**
 
 Retrieves a specific player by their `id`.
 
@@ -237,7 +237,7 @@ Retrieves a specific player by their `id`.
   "first_name": "Joe",
   "last_name": "Smith",
   "jersey_number": 12,
-  "position": "Quarterback",
+  "position": "QB",
   "height": 75,
   "weight": 220,
   "age": 25,
@@ -246,7 +246,7 @@ Retrieves a specific player by their `id`.
 }
 ```
 
-#### **POST /players**
+#### **POST /players/index.php**
 
 Creates a new player record.
 
@@ -257,7 +257,7 @@ Creates a new player record.
   "first_name": "Joe",
   "last_name": "Smith",
   "jersey_number": 12,
-  "position": "Quarterback",
+  "position": "QB",
   "height": 75,
   "weight": 220,
   "age": 25,
@@ -274,7 +274,7 @@ Creates a new player record.
   "first_name": "Joe",
   "last_name": "Smith",
   "jersey_number": 12,
-  "position": "Quarterback",
+  "position": "QB",
   "height": 75,
   "weight": 220,
   "age": 25,
@@ -283,7 +283,7 @@ Creates a new player record.
 }
 ```
 
-#### **PUT /players/{id}**
+#### **PUT /players/player.php?={id}**
 
 Updates a player record.
 
@@ -298,7 +298,7 @@ Updates a player record.
   "first_name": "Joe",
   "last_name": "Smith",
   "jersey_number": 12,
-  "position": "Quarterback",
+  "position": "QB",
   "height": 75,
   "weight": 225,
   "age": 26,
@@ -315,7 +315,7 @@ Updates a player record.
   "first_name": "Joe",
   "last_name": "Smith",
   "jersey_number": 12,
-  "position": "Quarterback",
+  "position": "QB",
   "height": 75,
   "weight": 225,
   "age": 26,
@@ -324,7 +324,7 @@ Updates a player record.
 }
 ```
 
-#### **DELETE /players/{id}**
+#### **DELETE /players/player.php?={id}**
 
 Deletes a player record.
 
@@ -346,9 +346,11 @@ Deletes a player record.
 
 | Endpoint                  | Method | Description                           |
 | ------------------------- | ------ | ------------------------------------- |
-| `/player_game_ranks`      | GET    | Retrieves a list of player game ranks |
-| `/player_game_ranks/{id}` | GET    | Retrieves a specific player game rank |
-| `/player_game_ranks`      | POST   | Creates a new player game rank        |
+| `/player_game_ranks/index.php`      | GET    | Retrieves a list of player game ranks |
+| `/player_game_ranks/rank.php?game_id={game_id}` | GET    | Retrieves a specific player game rank |
+| `/player_game_ranks/rank.php?player_id={player_id}` | GET    | Retrieves a specific player game rank |
+| `/player_game_ranks/rank.php?player_id={player_id}&game_id={game_id}` | GET    | Retrieves a specific player game rank |
+| `/player_game_ranks/index.php`      | POST   | Creates a new player game rank        |
 | `/player_game_ranks/{id}` | PUT    | Updates a player game rank            |
 | `/player_game_ranks/{id}` | DELETE | Deletes a player game rank            |
 
@@ -468,19 +470,19 @@ Deletes a player game rank record.
 
 | Endpoint                    | Method | Description                             |
 | --------------------------- | ------ | --------------------------------------- |
-| `/player_season_ranks`      | GET    | Retrieves a list of player season ranks |
-| `/player_season_ranks/{id}` | GET    | Retrieves a specific player season rank |
-| `/player_season_ranks`      | POST   | Creates a new player season rank        |
-| `/player_season_ranks/{id}` | PUT    | Updates a player season rank            |
-| `/player_season_ranks/{id}` | DELETE | Deletes a player season rank            |
+| `/player_season_ranks/index.php`      | GET    | Retrieves a list of player season ranks |
+| `/player_season_ranks/player_season_rank.php?={id}` | GET    | Retrieves a specific player season rank |
+| `/player_season_ranks/index.php`      | POST   | Creates a new player season rank        |
+| `/player_season_ranks/player_season_rank.php?={id}` | PUT    | Updates a player season rank            |
+| `/player_season_ranks/player_season_rank.php?={id}` | DELETE | Deletes a player season rank            |
 | `/player_season_ranks/recalculate.php` | POST | Triggers recalculation of all season ranks            |
 
-#### **GET /player\_season\_ranks**
+#### **GET /player\_season\_ranks/index.php**
 
 Retrieves a list of player season ranks.
 
 
-#### **GET /player\_season\_ranks/{id}**
+#### **GET /player\_season\_ranks/player_season_rank.php?={id}**
 
 Retrieves a specific player season rank by `id`.
 
@@ -498,12 +500,12 @@ Retrieves a specific player season rank by `id`.
 }
 ```
 
-#### **POST /player\_season\_ranks**
+#### **POST /player\_season\_ranks/index.php**
 
 Creates a new player season rank record.
 
 
-#### **PUT /player\_season\_ranks/{id}**
+#### **PUT /player\_season\_ranks/player_season_rank.php?={id}**
 
 Updates a player season rank record.
 
@@ -530,7 +532,7 @@ Updates a player season rank record.
 }
 ```
 
-#### **DELETE /player\_season\_ranks/{id}**
+#### **DELETE /player\_season\_ranks/player_season_rank.php?={id}**
 
 Deletes a player season rank record.
 
@@ -545,105 +547,3 @@ Deletes a player season rank record.
   "message": "Player season rank deleted successfully"
 }
 ```
-
-
-
-* **GET /games**
-
-```json
-[
-  {
-    "id": 1,
-    "opponent": "Dallas Cowboys",
-    "date": "2025-01-01",
-    "location": "Levi's Stadium",
-    "team_score": 24,
-    "opponent_score": 17
-  },
-  ...
-]
-```
-
-* **POST /games**
-
-```json
-{
-}
-```
-
-
-* **GET /players**
-
-```json
-[
-  {
-    "id": 1,
-    "first_name": "Joe",
-    "last_name": "Smith",
-    "jersey_number": 12,
-    "position": "Quarterback",
-    "height": 75,
-    "weight": 220,
-    "age": 25,
-    "exp": 3,
-    "college": "Stanford"
-  },
-  ...
-]
-```
-
-
-
-
-* **GET /player\_game\_ranks**
-
-```json
-[
-  {
-    "id": 1,
-    "player_id": 1,
-    "game_id": 1,
-    "rank": 1
-  },
-  ...
-]
-```
-
-* **POST /player\_game\_ranks**
-
-```json
-{
-  "id": 14878,
-  "player_id": 1,
-  "game_id": 1,
-  "rank": 1
-}
-```
-
-
-##### **Example Responses**
-
-* **GET /player\_season\_ranks**
-
-```json
-[
-  {
-    "id": 1,
-    "player_id": 1,
-    "rank": 5
-  },
-  ...
-]
-```
-
-* **POST /player\_season\_ranks**
-
-```json
-{
-  "id": 61,
-  "player_id": 1,
-  "rank": 5
-}
-```
-
-
