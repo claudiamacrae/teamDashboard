@@ -22,7 +22,13 @@ const GameCard = ({
     return [city, team];
   };
 
+  const normalizeMascot = (name) => {
+    if (!name) return "default"; // handle null/undefined
+    return name.trim().toLowerCase();
+  };
+
   const [oppTeamCity, oppTeamMascot] = formatOpponent(opponent); // Split opponent into two parts
+  const logoSrc = `/teamLogos/${normalizeMascot(oppTeamMascot) || "default"}.svg`;
 
   return (
     <div
@@ -31,7 +37,7 @@ const GameCard = ({
     >
       <div className={styles.date}>{date}</div>
       <div className={styles.location}>{location}</div>
-      <img src="/sfLogo.svg" alt="49ers Logo" className={styles.oppLogo} />
+      <img src={logoSrc} alt={`${oppTeamMascot} Team Logo`} className={styles.oppLogo} />
       <div className={styles.vs}>VS</div>
       <div className={styles.opponent}>
         <div className={styles.opponentPart1}>{oppTeamCity}</div>

@@ -174,11 +174,11 @@ const Dashboard = () => {
                 <option value="TE">TE</option>
               </select>
             </div>
-            <div>
+            <div className="flex space-x-2">
               <input
                 type="number"
                 placeholder="Min Exp"
-                className="border p-2 rounded w-24"
+                className="border p-2 rounded w-30"
                 value={minExpFilter !== 0 ? minExpFilter : ""}
                 onChange={(e) => {
                   const minVal = e.target.value;
@@ -188,7 +188,7 @@ const Dashboard = () => {
               <input
                 type="number"
                 placeholder="Max Exp"
-                className="border p-2 rounded w-24"
+                className="border p-2 rounded w-30"
                 value={maxExpFilter !== Infinity ? maxExpFilter : ""}
                 onChange={(e) => {
                   const maxVal = e.target.value;

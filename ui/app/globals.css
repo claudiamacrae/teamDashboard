@@ -80,8 +80,10 @@ body {
 
 .filter-panel {
   flex: 1;
-  background: #0ef4ca;
+  background: linear-gradient(to right, #aa0000, #550000);
   padding: 1rem;
+  color: white;
+  font-weight: bold;
 }
 
 .table-section {
@@ -89,9 +91,9 @@ body {
 }
 
 .player-info-aside {
-  transform: translateY(-50%);
   right: 1%;
   width: 300px;
+  top: 10%;
 }
 
 .player-table {
