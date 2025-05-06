@@ -42,6 +42,9 @@
     ```
 3. **Configure environment variables**
 
+    The API base URL is defined in `ui/.env.local`. If you choose to run the PHP server on a different host or port than the default (http://localhost:8000), update `API_BASE_URL` to match.
+
+
 4. **Run the development server**
     ```bash
     npm run dev
